@@ -1,6 +1,7 @@
 import socket
 import winsound
 import Tkinter
+import sys
 from Tkconstants import *
 from threading import Thread
 
@@ -17,6 +18,7 @@ def stop():
     else:
         pass
     root.destroy()
+    sys.exit()
 
 def wait():
     while True:
