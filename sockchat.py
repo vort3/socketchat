@@ -7,14 +7,14 @@ from threading import Thread
 
 
 port = 25565
-sock = [None] * 3
+sock = [None] * 2
 play = lambda: winsound.Beep(10000, 200)
 
 
 def stop():
-    if sock[1]:
-        sock[1].send('Bye bye!')
-        sock[1].close()
+    if sock[0]:
+        sock[0].send('Bye bye!')
+        sock[0].close()
     else:
         pass
     root.destroy()
@@ -22,7 +22,7 @@ def stop():
 
 def wait():
     while True:
-        input = sock[1].recv(4096)
+        input = sock[0].recv(4096)
         if not input:
             continue
         print " IN: ", input
@@ -34,7 +34,7 @@ def wait():
 
 def send(event):
     text = entry.get()
-    sock[1].send(text.encode('utf8'))
+    sock[0].send(text.encode('utf8'))
     play()
     chatlog.insert(END, u'\nMe: ' + text)
     chatlog.see(END)
@@ -45,23 +45,23 @@ def start():
     ip = ipdata.get()
     print ip
     print type(ip)
-    # if len(ip) == 0:
-    if True:
+    if len(ip) == 0:
+    # if True:
         listener = socket.socket()
         listener.bind(('', port))
         listener.listen(5)
         chatlog.insert(END, '\n' + 'Waiting for input connection...')
-        sock[1], sock[2] = listener.accept()
+        sock[0], sock[1] = listener.accept()
         chatlog.insert(END, '\n' + 'Successfully connected: ' + 
-                        str(sock[2]) + '\n')
+                        str(sock[1]) + '\n')
         play()
-        print sock[2]
-    else:
-        sock[1] = socket.socket()
         print sock[1]
+    else:
+        sock[0] = socket.socket()
+        print sock[0]
         chatlog.insert(END, '\n' + 'Connecting to: ' + 
                         ip + ':' + str(port))
-        sock[1].connect_ex((ip, port))
+        sock[0].connect_ex((ip, port))
         chatlog.insert(END, '\n' + 'Successfully connected!' + '\n')
         play()
     M = Thread(target=wait)
