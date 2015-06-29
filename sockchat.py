@@ -1,14 +1,17 @@
-import socket
-import winsound
-import Tkinter
 import sys
+import socket
+import Tkinter
 from Tkconstants import *
 from threading import Thread
 
-
 port = 25565
 sock = [None] * 2
-play = lambda: winsound.Beep(10000, 200)
+
+if sys.platform.startswith('win'):
+    import winsound
+    play = lambda: winsound.Beep(10000, 200)
+else:
+    play = lambda: None
 
 
 def stop():
